@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, HttpStatus, HttpCode, ParseIntPipe } from '@nestjs/common';
 import { Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,19 +22,19 @@ export class UsersController {
 
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  findOne(@Param('id') id: string) {  
+  findOne(@Param('id', ParseIntPipe) id: number) {  
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
   }
 }
