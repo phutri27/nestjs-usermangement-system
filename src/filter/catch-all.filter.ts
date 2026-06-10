@@ -23,9 +23,18 @@ export class CatchEverythingFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    let errMessage: string | string[];
+    if (exception instanceof HttpException){
+      const excResponse = exception.getResponse()
+      errMessage = (excResponse as any).message
+    } else {
+      errMessage = "Internal Server Error"
+    }
+
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
+      message: errMessage,
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
     };
 

@@ -1,38 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { User, Prisma } from '../generated/prisma/client.js';
 
 @Injectable()
 export class UsersService {
-  private readonly users: CreateUserDto[] = [];
+  constructor(private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.users.push(createUserDto)
+  async create(data: Prisma.UserCreateInput): Promise<User> {
+    return this.prisma.user.create({
+      data
+    })
   }
 
-  findAll(): CreateUserDto[] {
-    return this.users
+  async findAll(): Promise<User[]> {
+    return this.prisma.user.findMany()
   }
 
-  findOne(id: number): CreateUserDto | undefined {
-    const user = this.users.find((user) => user.id === id)
-    return user;
+  async findOne(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput
+    })
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    const userIndex = this.users.findIndex(user => user.id === id)
-    if (userIndex === -1){
-      return null;
-    }
-    this.users[userIndex] = { ...this.users[userIndex], ...updateUserDto}
-    return this.users[userIndex]
+  update(datas: {where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput}): Promise<User> {
+    const { where, data } = datas
+    return this.prisma.user.update({
+      where,
+      data
+    })
   }
 
-  remove(id: number) {
-    const index = this.users.findIndex(user => user.id === id)
-    if (index === -1){
-      return
-    } 
-    this.users.splice(index, 1)
+  remove(where: Prisma.UserWhereUniqueInput): Promise<User> {
+    return this.prisma.user.delete({
+      where
+    })
   }
 }

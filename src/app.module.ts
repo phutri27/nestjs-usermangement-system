@@ -1,15 +1,15 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './logger/logger.middleware.js';
 import { APP_INTERCEPTOR, APP_PIPE, APP_FILTER } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './transform/transform.interceptor.js';
 import { CatchEverythingFilter } from './filter/catch-all.filter.js';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, PrismaModule],
   controllers: [AppController],
   providers: [
     AppService,
