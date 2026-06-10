@@ -21,13 +21,11 @@ export class UsersController {
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.ACCEPTED)
   findOne(@Param('id', ParseIntPipe) id: number) {  
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  @HttpCode(HttpStatus.ACCEPTED)
   update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }

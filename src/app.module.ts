@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './logger/logger.middleware.js';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './transform/transform.interceptor.js';
+import { CatchEverythingFilter } from './filter/catch-all.filter.js';
 
 @Module({
   imports: [UsersModule],
@@ -19,6 +20,10 @@ import { TransformInterceptor } from './transform/transform.interceptor.js';
     {
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CatchEverythingFilter
     }
   ],
 })
