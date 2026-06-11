@@ -7,9 +7,18 @@ import { APP_INTERCEPTOR, APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { TransformInterceptor } from './transform/transform.interceptor.js';
 import { CatchEverythingFilter } from './filter/catch-all.filter.js';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, PrismaModule],
+  imports: [UsersModule, 
+    PrismaModule, 
+    AuthModule, 
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    })
+  ],
   controllers: [AppController],
   providers: [
     AppService,
