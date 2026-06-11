@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard.js';
 import { AuthService } from './auth/auth.service.js';
 import { JwtAuthGuard } from './auth/jwt-auth.guard.js';
-import { CurrentUser } from './users/custom-decorators/user.decorators.js';
+import { CurrentUser } from './users/custom-decorators/user.decorator.js';
 
 @Controller()
 export class AppController {

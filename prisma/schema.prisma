@@ -20,4 +20,10 @@ model User {
   age       Int
   password  String   
   createdAt DateTime @default(now())
+  role      Roles    @default(USER)
+}
+
+enum Roles{
+  ADMIN
+  USER
 }
