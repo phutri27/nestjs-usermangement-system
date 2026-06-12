@@ -29,7 +29,11 @@ export class UsersService {
     })
   }
 
-  update(datas: {where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput}): Promise<User> {
+  async uploadAvatar() {
+    
+  }
+
+  async update(datas: {where: Prisma.UserWhereUniqueInput; data: Prisma.UserUpdateInput}): Promise<User> {
     const { where, data } = datas
     return this.prisma.user.update({
       where,
@@ -37,7 +41,7 @@ export class UsersService {
     })
   }
 
-  remove(where: Prisma.UserWhereUniqueInput): Promise<User> {
+  async remove(where: Prisma.UserWhereUniqueInput): Promise<User> {
     return this.prisma.user.delete({
       where
     })

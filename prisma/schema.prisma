@@ -21,6 +21,16 @@ model User {
   password  String   
   createdAt DateTime @default(now())
   role      Roles    @default(USER)
+
+  avatar    Avatar[]
+}
+
+model Avatar {
+  id          String   @id @default(uuid())
+  avatar_url  String
+
+  user_id     Int
+  user        User    @relation(fields: [user_id], references: [id])
 }
 
 enum Roles{
