@@ -9,6 +9,8 @@ import { CatchEverythingFilter } from './filter/catch-all.filter.js';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration.js';
+import * as Joi from 'joi';
 
 @Module({
   imports: [UsersModule, 
@@ -16,7 +18,14 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule, 
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      load: [configuration],
+      validationSchema: Joi.object({
+        PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+        DATABASE_URL: Joi.string().required()
+      }),
+      validatePredefined: false,
+      cache: true
     }),
   ],
   controllers: [AppController],
