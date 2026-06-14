@@ -23,6 +23,17 @@ services:
       options: 
         max-size: "10m"
         max-file: "3"
+  backend:
+    build:
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
 networks: 
   prisma-network: 
 volumes:
