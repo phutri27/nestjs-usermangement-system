@@ -9,13 +9,13 @@ import { CurrentUser } from './users/custom-decorators/user.decorator.js';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@CurrentUser() user) {
-    return this.authService.login(user)
+    return this.authService.login(user);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -26,8 +26,8 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@CurrentUser() user){
-    return user
+  getProfile(@CurrentUser() user) {
+    return user;
   }
 
   @Get()
