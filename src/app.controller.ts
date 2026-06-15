@@ -14,7 +14,7 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  login(@CurrentUser() user): Promise<{ access_token: string }> {
+  login(@CurrentUser() user): { access_token: string } {
     return this.authService.login(user)
   }
 
