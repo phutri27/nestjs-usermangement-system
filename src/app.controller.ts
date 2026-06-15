@@ -1,9 +1,9 @@
 import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common'
 import { AppService } from './app.service'
-import { LocalAuthGuard } from './auth/local-auth.guard.js'
-import { AuthService } from './auth/auth.service.js'
-import { JwtAuthGuard } from './auth/jwt-auth.guard.js'
-import { CurrentUser } from './users/custom-decorators/user.decorator.js'
+import { LocalAuthGuard } from './auth/local-auth.guard'
+import { AuthService } from './auth/auth.service'
+import { JwtAuthGuard } from './auth/jwt-auth.guard'
+import { CurrentUser } from './users/custom-decorators/user.decorator'
 
 @Controller()
 export class AppController {
@@ -26,7 +26,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@CurrentUser() user): Promise<any> {
+  getProfile(@CurrentUser() user): any {
     return user
   }
 

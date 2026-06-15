@@ -19,11 +19,11 @@ export class UsersService {
     return user
   }
 
-  async findAll(): Promise<User[]> {
+  findAll(): Promise<User[]> {
     return this.prisma.user.findMany()
   }
 
-  async findOne(
+  findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
@@ -31,9 +31,9 @@ export class UsersService {
     })
   }
 
-  async uploadAvatar() {}
+  uploadAvatar() {}
 
-  async update(datas: {
+  update(datas: {
     where: Prisma.UserWhereUniqueInput
     data: Prisma.UserUpdateInput
   }): Promise<User> {
@@ -44,7 +44,7 @@ export class UsersService {
     })
   }
 
-  async remove(where: Prisma.UserWhereUniqueInput): Promise<User> {
+  remove(where: Prisma.UserWhereUniqueInput): Promise<User> {
     return this.prisma.user.delete({
       where,
     })
