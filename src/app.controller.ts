@@ -1,9 +1,9 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
-import { AppService } from './app.service';
-import { LocalAuthGuard } from './auth/local-auth.guard.js';
-import { AuthService } from './auth/auth.service.js';
-import { JwtAuthGuard } from './auth/jwt-auth.guard.js';
-import { CurrentUser } from './users/custom-decorators/user.decorator.js';
+import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common'
+import { AppService } from './app.service'
+import { LocalAuthGuard } from './auth/local-auth.guard.js'
+import { AuthService } from './auth/auth.service.js'
+import { JwtAuthGuard } from './auth/jwt-auth.guard.js'
+import { CurrentUser } from './users/custom-decorators/user.decorator.js'
 
 @Controller()
 export class AppController {
@@ -14,24 +14,24 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@CurrentUser() user) {
-    return this.authService.login(user);
+  login(@CurrentUser() user): Promise<{ access_token: string }> {
+    return this.authService.login(user)
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/logout')
-  async logout(@Request() req) {
-    return req.logout();
+  logout(@Request() req): Promise<any> {
+    return req.logout()
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@CurrentUser() user) {
-    return user;
+  getProfile(@CurrentUser() user): Promise<any> {
+    return user
   }
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return this.appService.getHello()
   }
 }
