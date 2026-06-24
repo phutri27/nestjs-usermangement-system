@@ -8,7 +8,6 @@ import {
   Param,
   HttpStatus,
   HttpCode,
-  ParseIntPipe,
   UseGuards,
   UseInterceptors,
   UploadedFile,
@@ -76,7 +75,7 @@ export class UsersController {
     status: HttpStatus.ACCEPTED,
     description: 'Find specfic user',
   })
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: number) {
     return this.usersService.findOne({ id })
   }
 
@@ -89,10 +88,7 @@ export class UsersController {
     description: 'Admin update user successfully',
   })
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update({
       where: { id },
       data: updateUserDto,
@@ -109,7 +105,7 @@ export class UsersController {
   })
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: number) {
     return this.usersService.remove({ id })
   }
 }

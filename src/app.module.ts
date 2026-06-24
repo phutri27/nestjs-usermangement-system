@@ -1,9 +1,5 @@
-import {
-  Module,
-  NestModule,
-  MiddlewareConsumer,
-  ValidationPipe,
-} from '@nestjs/common'
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
+import { CustomValidationPipe } from './pipes/validation-pipe-options'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UsersModule } from './users/users.module'
@@ -43,7 +39,7 @@ import * as Joi from 'joi'
     AppService,
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
+      useClass: CustomValidationPipe,
     },
     {
       provide: APP_INTERCEPTOR,
