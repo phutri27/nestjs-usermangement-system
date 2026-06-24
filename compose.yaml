@@ -32,7 +32,17 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - prisma-network
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+        - action: rebuild
+          path: package.json
 
 networks: 
   prisma-network: 

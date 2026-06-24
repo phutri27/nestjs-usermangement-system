@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable, Logger, UseInterceptors } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { User, Prisma } from '../generated/prisma/client'
 import bcrypt from 'bcrypt'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import type { Cache } from 'cache-manager'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  private readonly logger = new Logger(UsersService.name, { timestamp: true })
+  constructor(
+    private prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   async create(data: Prisma.UserCreateInput): Promise<Omit<User, 'password'>> {
     const hashedPassword = await bcrypt.hash(data.password, 10)
@@ -19,8 +26,10 @@ export class UsersService {
     return user
   }
 
-  findAll(): Promise<User[]> {
-    return this.prisma.user.findMany()
+  @UseInterceptors(CacheInterceptor)
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany()
+    return users
   }
 
   findOne(

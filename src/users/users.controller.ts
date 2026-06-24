@@ -22,6 +22,7 @@ import { RolesGuard } from '../guard/roles.guard'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @ApiTags('users')
 @Controller('users')
@@ -29,6 +30,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseInterceptors(CacheInterceptor)
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'User created' })
   @HttpCode(HttpStatus.CREATED)

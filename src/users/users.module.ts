@@ -13,7 +13,12 @@ import { MulterConfigService } from '../multer/multer.config'
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [
+    {
+      provide: UsersService,
+      useClass: UsersService,
+    },
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

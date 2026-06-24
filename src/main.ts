@@ -2,10 +2,14 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { MyLogger } from './logger/logger.service'
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  })
 
+  app.useLogger(new MyLogger())
   const config = new DocumentBuilder()
     .setTitle('Users management system')
     .setDescription('APIs for user mangement system')

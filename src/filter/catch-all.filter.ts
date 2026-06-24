@@ -4,8 +4,9 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-} from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+} from '@nestjs/common'
+import { HttpAdapterHost } from '@nestjs/core'
+import { Prisma } from '../generated/prisma/client'
 
 @Catch()
 export class CatchEverythingFilter implements ExceptionFilter {
@@ -14,21 +15,23 @@ export class CatchEverythingFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     // In certain situations `httpAdapter` might not be available in the
     // constructor method, thus we should resolve it here.
-    const { httpAdapter } = this.httpAdapterHost;
+    const { httpAdapter } = this.httpAdapterHost
 
-    const ctx = host.switchToHttp();
+    const ctx = host.switchToHttp()
 
     const httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+        : HttpStatus.INTERNAL_SERVER_ERROR
 
-    let errMessage: string | string[];
-    if (exception instanceof HttpException){
+    let errMessage: string | string[]
+    if (exception instanceof HttpException) {
       const excResponse = exception.getResponse()
       errMessage = (excResponse as any).message
+    } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      errMessage = exception.code
     } else {
-      errMessage = "Internal Server Error"
+      errMessage = 'Internal server error'
     }
 
     const responseBody = {
@@ -36,8 +39,8 @@ export class CatchEverythingFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       message: errMessage,
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
-    };
+    }
 
-    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
+    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus)
   }
 }

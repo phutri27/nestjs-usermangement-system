@@ -15,6 +15,8 @@ import { PrismaModule } from './prisma/prisma.module'
 import { AuthModule } from './auth/auth.module'
 import { ConfigModule } from '@nestjs/config'
 import configuration from './config/configuration'
+import { CacheModule } from '@nestjs/cache-manager'
+import { LoggerModule } from './logger/logger.module'
 import * as Joi from 'joi'
 
 @Module({
@@ -22,6 +24,7 @@ import * as Joi from 'joi'
     UsersModule,
     PrismaModule,
     AuthModule,
+    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -33,6 +36,7 @@ import * as Joi from 'joi'
       validatePredefined: false,
       cache: true,
     }),
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [
