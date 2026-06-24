@@ -19,7 +19,7 @@ export class CatchEverythingFilter implements ExceptionFilter {
 
     const ctx = host.switchToHttp()
 
-    const httpStatus =
+    let httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR
@@ -29,7 +29,23 @@ export class CatchEverythingFilter implements ExceptionFilter {
       const excResponse = exception.getResponse()
       errMessage = (excResponse as any).message
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      errMessage = exception.code
+      switch (exception.code) {
+        case 'P2002':
+          httpStatus = HttpStatus.CONFLICT
+          errMessage = 'Email already exists'
+          break
+        case 'P2025':
+          httpStatus = HttpStatus.NOT_FOUND
+          errMessage = 'Resource not found'
+          break
+        case 'P2003':
+          httpStatus = HttpStatus.BAD_REQUEST
+          errMessage = 'Invalid reference'
+          break
+        default:
+          httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+          errMessage = exception.code
+      }
     } else {
       errMessage = 'Internal server error'
     }

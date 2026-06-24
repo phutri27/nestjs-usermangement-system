@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import type { Cache } from 'cache-manager'
 import { CacheInterceptor } from '@nestjs/cache-manager'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -49,14 +50,23 @@ export class UsersService {
 
   uploadAvatar() {}
 
-  update(datas: {
+  async update(datas: {
     where: Prisma.UserWhereUniqueInput
-    data: Prisma.UserUpdateInput
+    data: UpdateUserDto
   }): Promise<User> {
-    const { where, data } = datas
+    const { data, where } = datas
+    const { password, ...rest } = data
+
+    const hashedPassword = password
+      ? await bcrypt.hash(password, 10)
+      : undefined
+
     return this.prisma.user.update({
       where,
-      data,
+      data: {
+        ...rest,
+        ...(hashedPassword && { password: hashedPassword }),
+      },
     })
   }
 
