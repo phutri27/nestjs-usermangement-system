@@ -22,6 +22,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CacheInterceptor } from '@nestjs/cache-manager'
+import { Role } from '../common/user-role.enum'
 
 @ApiTags('users')
 @Controller('users')
@@ -80,7 +81,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(['ADMIN'])
+  @Roles([Role.ADMIN])
   @Patch(':id')
   @ApiOperation({ summary: 'Admin update user' })
   @ApiResponse({
@@ -96,7 +97,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(['ADMIN'])
+  @Roles([Role.ADMIN])
   @Delete(':id')
   @ApiOperation({ summary: 'Admin delete user' })
   @ApiResponse({
