@@ -27,16 +27,23 @@ export class UsersService {
   }
 
   @UseInterceptors(CacheInterceptor)
-  async findAll(): Promise<User[]> {
-    const users = await this.prisma.user.findMany()
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.prisma.user.findMany({
+      omit: {
+        password: true,
+      },
+    })
     return users
   }
 
   findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
+  ): Promise<Omit<User, 'password'> | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
+      omit: {
+        password: true,
+      },
     })
   }
 
