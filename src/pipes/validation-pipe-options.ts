@@ -1,5 +1,6 @@
-import { ValidationPipe } from '@nestjs/common'
+import { Injectable, ValidationPipe } from '@nestjs/common'
 
+@Injectable()
 export class CustomValidationPipe extends ValidationPipe {
   constructor() {
     super({
