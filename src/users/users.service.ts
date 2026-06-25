@@ -37,6 +37,7 @@ export class UsersService {
     return users
   }
 
+  @UseInterceptors(CacheInterceptor)
   findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<Omit<User, 'password'> | null> {
@@ -48,7 +49,9 @@ export class UsersService {
     })
   }
 
-  uploadAvatar() {}
+  uploadAvatar() {
+    console.log('just a test function')
+  }
 
   async update(datas: {
     where: Prisma.UserWhereUniqueInput

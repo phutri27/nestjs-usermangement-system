@@ -20,6 +20,7 @@ import * as Joi from 'joi'
     UsersModule,
     PrismaModule,
     AuthModule,
+    LoggerModule,
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -32,7 +33,6 @@ import * as Joi from 'joi'
       validatePredefined: false,
       cache: true,
     }),
-    LoggerModule,
   ],
   controllers: [AppController],
   providers: [

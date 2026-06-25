@@ -12,10 +12,4 @@ export class AuthController {
   login(@CurrentUser() user): { access_token: string } {
     return this.authService.login(user)
   }
-
-  @UseGuards(LocalAuthGuard)
-  @Post('logout')
-  logout(@Request() req): Promise<any> {
-    return req.logout()
-  }
 }
