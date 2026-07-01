@@ -9,28 +9,35 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - 
+        name: Checkout code
         uses: actions/checkout@v6
       
-      - name: Set up nodejs environment
+      - 
+        name: Set up nodejs environment
         uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       
-      - name: Install dependencies
+      - 
+        name: Install dependencies
         run: npm install
       
-      - name: Generate prisma
+      - 
+        name: Generate prisma
         run: npx prisma Generate
 
-      - name: build
+      - 
+        name: build
         run: npm run build
 
-      - name: tests
+      - 
+        name: tests
         run: npm run test:cov
       
-      - name: upload test coverage
+      - 
+        name: upload test coverage
         uses: actions/upload-artifact@v7
         with:
           name: test coverage
