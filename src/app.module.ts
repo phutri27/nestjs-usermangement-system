@@ -30,7 +30,7 @@ import * as Joi from 'joi'
         JWT_SECRET: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
       }),
-      validatePredefined: false,
+      ignoreEnvFile: true,
       cache: true,
     }),
   ],
