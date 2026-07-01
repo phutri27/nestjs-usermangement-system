@@ -26,7 +26,7 @@ jobs:
       
       - 
         name: Generate prisma
-        run: npx prisma Generate
+        run: npx prisma generate
 
       - 
         name: build
