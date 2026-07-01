@@ -27,6 +27,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.actor }}/${{ vars.IMAGE_NAME }}
           tags: |
+            type=sha,prefix=,format=short
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
